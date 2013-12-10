@@ -1,0 +1,80 @@
+I. KOPIRASHT KONSTRKTOR
+	1. Kopira stoinostite na edin obekt v drug
+
+	2. Ako napravim kopirashtiq kosntruktor "private" toi nqma
+	   da moje da se dostupi => ne mojem da kopirame
+			
+	3. Ako kopirame edin obekt v drug te polzvat edna i sa6ta pamet koeto e losho
+	   Kopirashtiq konstruktor se darji neadekvatno
+	   Za tova pravim nash nov kopirasht konstruktor
+
+II. DESTRUKTOR
+	1. Destruktira!
+	
+	2. Chlen funkciq, koqto se vika avtomatichno,
+	   kogato obekta izleze ot oblasta na vidimost
+		
+III. VRUSHTANE NA REF ILI POINTER KUM LOKALNA PROMENLIVA
+	1. Ne mojem da varnem prepratka kam lokalna pramenliva
+	   za6toto tq iz4ezva sled kraq na scope-a
+	   
+	2. This sushtestvuva izvan scope-a na funckiqta
+	   i za tova mojem da varmen prepratka kam neq
+	
+IV. OPERATOR <<
+	ostream& operator<<(ostream& out, const Point& p){
+		out << '(' << p.get_x() << ',' << p.get_y() << endl;
+		return out; // Vrushtame izhoda
+	}
+	
+V. CONST CHAR*, CHAR* CONST, ...
+	char str1[] = "hello"
+	char str2[] = "hell";
+	
+	const char* pc = str1;
+	pc[2] = 'a'; // greshka!
+	pc = str2; // OK!
+	
+	char *const cp = str1;
+	cp[2] = 'a'; // OK!
+	cp = str2; // greshka!
+	
+	const char *const cpc = str1;
+	cpc[2] = 'a'; // greshka!
+	cpc = str2; // greshka!
+	
+	
+VI. INLINE FUNCKIQ
+	1. Pri inline funkciite kogato viknem funkciq
+	   funckqita koqto vikame se kopira na mqstoto kudeto q vikame
+	   vmesto kompilatorat da q tursi
+	   
+	2. Kogato vikame funckiqta mnogo puti stava mnogo bavno ot mnogoto
+	   povtarqne
+	  
+	3. Programista sam si izbira koe e po-dobre v dadeniq slu4ei
+	
+VII. THIS
+	1. Ukazatel koito e definiran za nas
+	
+	2. Mojem da go pozlvame samo v klasa
+	   
+	3. Toi e Point *const this;
+	
+	4. Ne mojem da naso4vame this kam drug obekt
+	   this = &other; // ne e pozvoleno
+
+VII. MUDROSTI
+	Mudrostite na Nedelko: 
+	 - Konstruira destruktoriraniq kopirasht konstruktor
+	 - 6iro4inata na 4a6ata s 4ai e 6eiset i 4etiri
+	 
+	Madrosti na Joni
+	 - int maini(){}
+	 - 6i6e s u6i na 6use se su6i
+ 	 - 46666666666666666t
+ 	 - Kakvo polu4i mom4enceto bez race za Koleda
+ 	   - Rak
+ 	   
+ 
+ 
