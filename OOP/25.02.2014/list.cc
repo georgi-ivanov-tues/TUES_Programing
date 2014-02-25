@@ -1,4 +1,5 @@
 #include <iostream>
+
 using namespace std;
 
 class ListError{};
@@ -45,11 +46,21 @@ public:
 		return head_->data_;
 	}
 	
+	T& back(){
+		if(empty()) {
+			throw ListError();
+		}
+		return tail_->data_;
+	}
+	
+	const T& back() const{
+		
+	}
+	
 	void pop_front() {
 		if(empty()) {
 			throw ListError();
 		}
-		
 		Elem* old_head = head_;
 		head_ = head_->next_;
 		delete old_head;
@@ -59,18 +70,7 @@ public:
 		if(empty()) {
 			throw ListError();
 		}
-		
-	}
-
-	const T& back() const{
-		
-	}
-	
-	T& back(){
-		if(empty()) {
-			throw ListError();
-		}
-		return tail_->data_;
+		//...
 	}
 	
 	~List() {
@@ -78,8 +78,83 @@ public:
 			pop_front();
 		}
 	}
-};
+	
+	// Iterator
+	class iterator {
+		friend class List;
 
+		Elem* current_;
+
+		iterator(Elem* current)
+		: current_(current)
+		{}
+		
+		public:
+		iterator& operator++() {
+			current_=current_->next_;
+			return *this;
+		}
+		
+		iterator operator++(int) {
+			iterator res=*this;
+			current_=current_->next_;
+
+			return res;
+		}
+
+		int& operator*() {
+			return current_->data_;
+		}
+
+		bool operator==(const iterator& other) const {
+			return current_==other.current_;
+		}
+
+		bool operator!=(const iterator& other) const {
+			return ! operator==(other);
+		}
+
+	};
+
+	iterator begin() const {
+		return iterator(head_->next_);
+	}
+
+	iterator end() const {
+		return iterator(head_);
+	}
+
+	iterator insert(iterator pos, int val) {
+		Elem* new_elem = new Elem(val);
+		Elem* curr = pos.current_;
+
+		Elem* prev=curr->prev_;
+
+		prev->next_=new_elem;
+		new_elem->prev_=prev;
+
+		new_elem->next_=curr;
+		curr->prev_=new_elem;
+
+		return iterator(new_elem);
+	}
+
+
+	iterator erase(iterator pos) {
+		Elem* curr=pos.current_;
+
+		Elem* next=curr->next_;
+		Elem* prev=curr->prev_;
+
+		prev->next_=next;
+		next->prev_=prev;
+
+		delete curr;
+
+		return iterator(next);
+	}
+
+};
 
 int main() {
 	List<int> l1;
@@ -95,26 +170,49 @@ int main() {
 	l1.push_back(50);	
 	l1.push_back(51);
 	cout << l1.back() << endl;
-	
+
+	cout << endl;	
+
+	// Iterator...
+	int i;
+	// ALAHU AKBAR!
+	List ls;
+	cout << "ls.empty()? " << ls.empty() << endl;
+	ls.push_front(1);
+	cout << "ls.empty()? " << ls.empty() << endl;
+	ls.push_front(0);
+	cout << "ls.front(): " << ls.front() << "; "
+		<< "ls.back(): " << ls.back() << endl;
+	ls.push_back(2);
+	cout << "ls.front(): " << ls.front() << "; "
+		<< "ls.back(): " << ls.back() << endl;
+	ls.pop_front();
+	cout << "ls.front(): " << ls.front() << "; "
+		<< "ls.back(): " << ls.back() << endl;
+
+	List::iterator it = ls.begin();
+
+	it++;
+
+	*it;
+	*it=42;
+
+	it!=ls.end();
+
+	ls.insert(ls.begin(),-42);
+	ls.insert(ls.end(),42);
+
+	for(List::iterator i=ls.begin();i!=ls.end();++i) {
+		cout << (*i) << ' ';
+	}
+	cout << endl;
+
+	ls.erase(ls.begin());
+	//ls.erase(--ls.end());
+
+	for(List::iterator i=ls.begin();i!=ls.end();++i) {
+		cout << (*i) << ' ';
+	}
+	cout << endl;
 	return 0;
 }
-
-/*
-
-За разлика от примера вашият клас трябва да поддържа указатели както към началото head_, така и към края (последният елемент) на списъка tail_.
-Класът трябва да поддържа следните операции:
-1) добавяне на елементи в началото и в края на списъка. Методи
-void push_front()
-void push_back()
-2) изтриване на елементи в началото и в края на списъка. Методи
-void pop_front()
-void pop_back()
-3) Четене на стойността на елемент в началото и в края на списъка. Методи
-const T& front() const;
-T& front();
-const T& back() const;
-T& back();
-4) Копиращ конструктор и оператор за присвояване.
-5) Деструктор.
-
-*/
