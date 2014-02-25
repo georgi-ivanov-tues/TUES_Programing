@@ -175,7 +175,7 @@ int main() {
 
 	// Iterator...
 	int i;
-	// ALAHU AKBAR!
+
 	List ls;
 	cout << "ls.empty()? " << ls.empty() << endl;
 	ls.push_front(1);
@@ -216,3 +216,5 @@ int main() {
 	cout << endl;
 	return 0;
 }
+
+// Blue Waffle!
