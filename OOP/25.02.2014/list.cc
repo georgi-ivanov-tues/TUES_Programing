@@ -216,3 +216,5 @@ int main() {
 	cout << endl;
 	return 0;
 }
+
+// Blue Waffle!
