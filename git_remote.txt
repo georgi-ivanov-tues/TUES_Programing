@@ -1,0 +1,1 @@
+git remote set-url origin https://georgi-ivanov-tues@github.com/georgi-ivanov-tues/TUES_Programing_2013-2014.git
