@@ -44,4 +44,4 @@ int main(){
 	return 0;
 }
 
-// Vse oshte mrazq niski!!!
+// Vse oshte mrazq nishki!!!
