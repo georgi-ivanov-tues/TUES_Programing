@@ -13,7 +13,7 @@ int main(int argc, char* argv[]){
 		error("bad number of arguments...");
 	}	
 	
-	ifstream in(argv[1]);
+	ifstream in(argv[1]); 
 	if(!in){
 		error("bad source file...");
 	}
