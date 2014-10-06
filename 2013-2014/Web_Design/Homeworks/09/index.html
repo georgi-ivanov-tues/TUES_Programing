@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="style.css" rel="stylesheet" type = "text/css">
+	</head>
+<body>
+
+	<div class="container">
+		
+		<div id="header">
+			<h1>Registration</h1>		
+			<div class="clear"></div>
+		</div>
+
+		<div class="main">
+
+			<div class="content">
+			
+				<form class="form">
+				<h2 id="first_title">Main information</h2>
+					Username: <input type="text" name="user" required><br>
+					Password: <input type="password" name="password" required><br>
+					Email: <input id="emailaddress" type="email" name="emailaddress" placeholder="anything@example.com" required/>
+				
+				<h2>Additional information</h2>
+				
+					First Name: <input type="text" name="user"><br>
+					Last Name: <input type="text" name="user"><br>
+					Facebook: <input type="text" name="user"><br>
+					Birthday: <input id="birthday" name="birthday" type="date" /><br>
+					Country: <input id="country" type="text" name="country"  size="40" list="countries" />
+					<datalist id="countries">
+						<option value="Australia">
+						<option value="Canada">
+						<option value="Germany">
+						<option value="France">
+						<option value="United Kingdom">
+						<option value="United States">
+					</datalist><br>
+
+					Gender:
+					<input type="radio" name="Gender" value="male">Male
+					<input type="radio" name="Gender" value="female">Female
+					<input type="radio" name="Gender" value="female">Other<br>
+					
+					Which of the following do you have ?<br>
+					<input type="checkbox" name="vehicle" value="Bike">A bike<br>
+					<input type="checkbox" name="vehicle" value="Car">A car<br>
+					<input type="checkbox" name="vehicle" value="Car">A girlfriend<br>
+					<input type="checkbox" name="vehicle" value="Car">A life<br>
+					
+					Question for idiots...<br>
+					How many legs does a cat have ?
+					<input id="money" name="money" type="number" min="0" max ="10" step="1" value="0" /><br>
+				
+					<input type="submit" value="Submit">
+				</form>
+				
+			</div>
+
+		</div>
+		
+		<div id="footer">	
+			<p>Joni &copy;</p>
+		</div>
+
+	</div>
+
+</body>
+</html>
