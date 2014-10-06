@@ -88,7 +88,7 @@ public:
 		return buffer_[size_-1]; // size_ sochi sled kraq!
 	}
 	
-	const	T& back() const{
+	const T& back() const{
 		if(empty()){
 			throw exception();
 		}		
