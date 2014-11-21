@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 2 packages to &apos;Internet_Programing/src&apos;&#x0D;&#x0A;- Original project: &apos;Sockets&apos;&#x0D;&#x0A;- Destination element: &apos;Internet_Programing/src&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     Sockets/src/org.elsysbg.courses.ip.sockets.crud.server&#x0D;&#x0A;     Sockets/src/org.elsysbg.courses.ip.sockets.intro" description="Copy packages" destination="=Internet_Programing/src" element1="/src&lt;org.elsysbg.courses.ip.sockets.crud.server" element2="/src&lt;org.elsysbg.courses.ip.sockets.intro" flags="589830" fragments="2" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyPackages" stamp="1416583837895" version="1.0"/>
+</session>

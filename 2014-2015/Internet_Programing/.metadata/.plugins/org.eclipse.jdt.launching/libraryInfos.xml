@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<libraryInfos>
+<libraryInfo home="C:\WinApp\Javaw" version="1.8.0_20">
+<bootpath>
+<entry path="C:\WinApp\Javaw\lib\resources.jar"/>
+<entry path="C:\WinApp\Javaw\lib\rt.jar"/>
+<entry path="C:\WinApp\Javaw\lib\sunrsasign.jar"/>
+<entry path="C:\WinApp\Javaw\lib\jsse.jar"/>
+<entry path="C:\WinApp\Javaw\lib\jce.jar"/>
+<entry path="C:\WinApp\Javaw\lib\charsets.jar"/>
+<entry path="C:\WinApp\Javaw\lib\jfr.jar"/>
+<entry path="C:\WinApp\Javaw\classes"/>
+</bootpath>
+<extensionDirs>
+<entry path="C:\WinApp\Javaw\lib\ext"/>
+<entry path="C:\Windows\Sun\Java\lib\ext"/>
+</extensionDirs>
+<endorsedDirs>
+<entry path="C:\WinApp\Javaw\lib\endorsed"/>
+</endorsedDirs>
+</libraryInfo>
+</libraryInfos>

@@ -13,12 +13,12 @@ public class SimpleEchoClient {
 
 	public static void main(String[] args) throws IOException {
 
-		if(args.length == 0){
-			System.out.println("No arguments");
-			System.exit(0);
-		}
+//		if(args.length == 0){
+//			System.out.println("No arguments");
+//			System.exit(0);
+//		}
 		
-		final String TEXT = args[0] + "\n";
+		final String TEXT = "10 2 3 - \n";
 		
 		try (Socket echoSocket = new Socket(HOST, PORT);
 				OutputStream outStream = echoSocket.getOutputStream();

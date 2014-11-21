@@ -47,7 +47,35 @@ public class EchoServer {
 								out.println("good bye!");
 								break;
 							}
-							out.println(s);
+							//out.println(s);
+							String[] s1 = s.split(" ");
+							int result = 0;
+							String operation = s1[s1.length - 1];
+							switch(operation){
+							case "+":
+								for(int i = 0; i < s1.length - 1; i++){
+									result += Integer.parseInt(s1[i]);
+								}
+								break;
+							case "-":
+								result = Integer.parseInt(s1[0]);
+								for(int i = 1; i < s1.length - 1; i++){
+									result -= Integer.parseInt(s1[i]);
+								}
+								break;
+							case "*":
+								result = Integer.parseInt(s1[0]);
+								for(int i = 1; i < s1.length - 1; i++){
+									result += Integer.parseInt(s1[i]);
+								}
+								break;
+							case "/":
+								for(int i = 0; i < s1.length - 1; i++){
+									result += Integer.parseInt(s1[i]);
+								}
+								break;
+							}
+							out.println(result);
 						}
 					}
 				}
