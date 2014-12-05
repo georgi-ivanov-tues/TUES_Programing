@@ -1,0 +1,26 @@
+package Day_7;
+
+import java.util.List;
+import java.util.Map;
+
+public class RequestParser {
+	private List<String> requestList;
+	private List<String> firstLineParsed;
+	private Map<String, String> map;
+	public RequestParser(List<String> request){
+		String[] firstLineParsedtoString = request.get(0).split(" ");
+		
+		for(String el : firstLineParsedtoString){
+			firstLineParsed.toString(0);
+		}
+		
+		String[] secondLine = requestList.get(1).split(":");
+		
+		for(int i = 0; i < secondLine.length / 2; i++){
+			map.put(secondLine[i], secondLine[i+1]);
+		}
+	
+		Request newRequest = new Request(
+				firstLineParsed.get(0), firstLineParsed.get(1), firstLineParsed.get(2), map, null);		
+	}
+}

@@ -1,0 +1,11 @@
+package Day_7;
+
+import java.util.List;
+
+public class RequestParser {
+	List<String> requestList;
+	//Request request = new Request(null, null, null, request, null);
+	public RequestParser(List<String> requestList){
+		this.requestList = requestList;
+	}
+}

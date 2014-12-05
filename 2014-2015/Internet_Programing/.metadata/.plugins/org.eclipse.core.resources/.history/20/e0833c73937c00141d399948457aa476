@@ -1,0 +1,28 @@
+package Day_7;
+
+import java.util.List;
+
+public class RequestParser {
+	String request;
+	List<String> requestList;
+	List<String> firstLineParsed;
+	public RequestParser(String request){
+		this.request = request;
+	}
+	
+	public void requestParser(){
+		String[] requestParsed = request.split("\n");
+		requestList.add(request[0]);
+		requestList.add(request[1]);
+		for(String el : requestParsed){
+			requestList.add(el);
+		}
+	}
+	
+	public void createRequest(){
+//		Map<String, String> map = requestList.get(requestList.size() - 1);
+		Request newRequest = new Request(
+				requestList.get(0), requestList.get(1), requestList.get(2), requestList.get(3), null);
+		
+	}
+}

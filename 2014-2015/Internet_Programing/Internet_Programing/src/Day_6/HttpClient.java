@@ -13,7 +13,7 @@ public class HttpClient {
 
 	public static void main(String[] args) throws IOException {
 
-		final String TEXT = "GET index.html:4444 \\n Accept: applications/html \n";
+		final String TEXT = "GET /index.html:4444 \\n Accept: applications/html \n";
 		
 		try (Socket echoSocket = new Socket(HOST, PORT);
 				OutputStream outStream = echoSocket.getOutputStream();
