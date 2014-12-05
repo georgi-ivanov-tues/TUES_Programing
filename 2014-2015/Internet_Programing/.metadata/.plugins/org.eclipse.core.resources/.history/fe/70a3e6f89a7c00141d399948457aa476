@@ -45,6 +45,7 @@ public class HttpServer {
 						String[] operations = null;
 						List<String> allLines = new LinkedList<String>();
 						while((s = in.readLine()) != null){
+							System.out.println(s);
 							allLines.add(s);
 						}
 						RequestParser rq = new RequestParser();

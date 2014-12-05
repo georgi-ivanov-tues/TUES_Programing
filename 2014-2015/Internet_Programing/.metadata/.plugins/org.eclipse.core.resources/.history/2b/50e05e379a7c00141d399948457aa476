@@ -13,7 +13,7 @@ public class HttpClient {
 
 	public static void main(String[] args) throws IOException {
 
-		final String TEXT = "GET /index.html HTTP/1.1 \\n Host: www.example.com \n";
+		final String TEXT = "GET index.html HTTP/1.1 \\n Host: www.example.com \n";
 		//GET /index.html:4444 \\n Accept: applications/html \n
 		
 		try (Socket echoSocket = new Socket(HOST, PORT);
