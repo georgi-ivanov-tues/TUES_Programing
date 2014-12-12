@@ -1,8 +1,0 @@
-package Day_7;
-
-import java.util.List;
-
-public class RequestParser {
-	List<> requestList = new List<String>();
-	Request request = new Request();
-}

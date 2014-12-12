@@ -1,6 +1,0 @@
-package Day_7;
-
-public class RequestParser {
-	List<String> request = new List<String>;
-	Request request = new Request();
-}

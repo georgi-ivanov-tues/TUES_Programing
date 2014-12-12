@@ -1,0 +1,22 @@
+package Day_8;
+
+import java.io.PrintWriter;
+
+public class Response {
+	
+	public void response(PrintWriter out, Request r){
+		if(r.getMethod().equals("GET")){
+			printFile(out);
+		}else{
+			printError(out);
+		}
+	}
+	
+	public void printFile(PrintWriter out){
+		
+	}
+	
+	public void printError(PrintWriter out){
+		
+	}
+}
