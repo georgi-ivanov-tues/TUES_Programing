@@ -1,0 +1,82 @@
+package Day_9;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class RequestParser {
+
+	public Request parse(List<String> request) {
+		String[] firstLineParsed = request.remove(0).split(" ");
+
+		Map<String, String> headers = new HashMap<>();
+		for (String header : request) {
+			String[] secondLine = header.split(": ");
+			headers.put(secondLine[0], secondLine[1]);
+		}
+		
+		List<String> bodyList = new ArrayList<String>();
+
+		for(String asd : request){
+			boolean isBody = false;
+			if(asd.equals("/r/n/r/n")){
+				isBody = true;
+				continue;
+			}
+			
+			if(isBody){
+				System.out.println("BODY = " + asd);
+				bodyList.add(asd);
+			}
+		}
+		
+		Object body = bodyList;
+		
+		parsePathParams(firstLineParsed[1]);
+		
+		return new Request(firstLineParsed[0],
+				firstLineParsed[1], firstLineParsed[2], body, headers);
+	}
+	
+	public void parsePathParams(String path){
+		String[] afterArray = path.split("/");
+		String after = afterArray[afterArray.length - 1];
+//		String[] params = after.split("$");
+		String[] query = after.split("\\?");
+
+		if(query.length == 1){
+			return;
+		}
+		
+		//		params[params.length - 1] = params[params.length - 1].split("\\?")[0];
+//		query[0] = query[0].split("\\?")[1];
+		
+		String[] queryParams = query[1].split("&");
+		
+//		for(String para : params)System.out.println("PARAM = " + para);
+		for(String que : queryParams)System.out.println("QUERY = " + que);
+		
+		Set<String> set = new HashSet<String>();
+		set.add(queryParams[0]);
+		
+		Map<String, String> map = new LinkedHashMap<String, String>();
+		for(int i = 0; i < queryParams.length; i++){
+			String[] valio = queryParams[i].split("=");
+			map.put(valio[0], valio[1]);
+		}
+		
+		System.out.println(map.size());
+
+		for(String val : map.values()){
+			System.out.println(val);
+		}
+		
+//		for (int i = 0; i < map.size(); i++) {
+//			System.out.println("MAP = " + map.values());
+//		}
+	}
+}

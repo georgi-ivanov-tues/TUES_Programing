@@ -1,0 +1,67 @@
+package Day_9;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class RequestParser {
+
+	public Request parse(List<String> request) {
+		String[] firstLineParsed = request.remove(0).split(" ");
+
+		Map<String, String> headers = new HashMap<>();
+		for (String header : request) {
+			String[] secondLine = header.split(": ");
+			headers.put(secondLine[0], secondLine[1]);
+		}
+		
+		List<String> bodyList = new ArrayList<String>();
+
+		for(String asd : request){
+			boolean isBody = false;
+			if(asd.equals("/r/n/r/n")){
+				isBody = true;
+				continue;
+			}
+			
+			if(isBody){
+				System.out.println("BODY = " + asd);
+				bodyList.add(asd);
+			}
+		}
+		
+		Object body = bodyList;
+		
+		parsePathParams(firstLineParsed[1]);
+		
+		return new Request(firstLineParsed[0],
+				firstLineParsed[1], firstLineParsed[2], body, headers);
+	}
+	
+	public void parsePathParams(String path){
+		String[] afterArray = path.split("/");
+		String after = afterArray[afterArray.length - 1];
+//		String[] params = after.split("$");
+		String[] query = after.split("\\?");
+//		params[params.length - 1] = params[params.length - 1].split("\\?")[0];
+//		query[0] = query[0].split("\\?")[1];
+		
+//		for(String para : params)System.out.println("PARAM = " + para);
+//		for(String que : query)System.out.println("QUERY = " + que);
+		
+		Set<String> set = new HashSet<String>();
+		set.add(query[0]);
+		
+		Map<String, String> map = new HashMap<String, String>();
+		for(int i = 1; i < query.length - 1; i = i + 2)map.put(query[i], query[i+1]);
+		
+		System.out.println(map.size());
+		
+		for (int i = 0; i < map.size(); i++) {
+			System.out.println("MAP = " + map.get(i));
+		}
+	}
+}
