@@ -1,0 +1,13 @@
+package org.elsys_bg.abonatnik.rest;
+
+import java.util.List;
+
+import org.elsys_bg.abonatnik.model.Student;
+
+public class StudentResource {
+	public List<Student> getAllStudents(){
+		List<Student> s = null;
+		
+		return s;
+	}
+}

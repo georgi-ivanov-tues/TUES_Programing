@@ -1,0 +1,7 @@
+package org.elsys_bg.abonatnik.rest;
+
+public class StudentResource {
+	public List<Student> getAllStudents(){
+		List<student> s = null;
+	}
+}
