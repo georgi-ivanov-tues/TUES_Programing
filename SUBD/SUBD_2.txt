@@ -1,0 +1,37 @@
+./ij
+connect 'jdbc:derby:firstdb';
+
+CREATE TABLE images (id INT, img BLOB);
+ALTER TABLE PERSON ADD IMAGE BLOB;
+
+alter table person drop column image;
+
+SELECT * FROM PERSON;
+
+SELECT COUNT(*) FROM PERSON;
+
+INSERT INTO PERSON VALUES('Gosho','Ot Pochivka',20,'2012-02-02');
+
+SELECT * FROM PERSON WHERE ANNUAL_BILLING > 100;
+SELECT * FROM PERSON WHERE ANNUAL_BILLING > 100 and NAME like '%e%';
+
+INSERT INTO PERSON VALUES('Nedelcho','mainata mu',200,'2012-02-02');
+
+SELECT * FROM PERSON WHERE ANNUAL_BILLING > 100 and NAME like '%e%' ORDER BY ANNUAL_BILLING DESC;
+SELECT * FROM PERSON WHERE ANNUAL_BILLING BETWEEN 190 and 210;
+
+
+SELECT AVG(ANNUAL_BILLING) FROM PERSON; // AVG, MIN, MAX, SUM, COUNT
+
+
+IF YOU FUCK UP:
+ps ax | grep derby
+kill -9 2959
+
+
+NOT WORKING:
+INSERT INTO PERSON VALUES('Gosho','Ot Pochivka',20,'2012-02-02',LOAD_FILE('/home/student11a/Desktop/db-derby-10.11.1.1-bin/bin/firstdb/blob_img.jpeg'));
+
+INSERT INTO PERSON VALUES('Gosho','Ot Pochivka',20,'2012-02-02','/home/student11a/Desktop/db-derby-10.11.1.1-bin/bin/firstdb/blob_img.jpeg');
+
+INSERT INTO PERSON VALUES('Gosho','Ot Pochivka',20,'2012-02-02',readfile('/home/student11a/Desktop/db-derby-10.11.1.1-bin/bin/firstdb/blob_img.jpeg'));
