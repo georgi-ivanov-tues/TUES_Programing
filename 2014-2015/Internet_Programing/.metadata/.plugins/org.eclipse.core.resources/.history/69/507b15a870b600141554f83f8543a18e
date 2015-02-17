@@ -1,0 +1,8 @@
+package org.elsys_bg.abonatnik.application;
+
+import javax.ws.rs.ApplicationPath;
+
+@ApplicationPath("Abonatnik")
+public class AbonatnikApplication extends ResourceConfig {
+
+}

@@ -1,0 +1,14 @@
+package org.elsys_bg.abonatnik.model;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class Student {
+	private String name;
+	private int grade;
+	private char clazz;
+	
+	public Student(){
+		
+	}
+}

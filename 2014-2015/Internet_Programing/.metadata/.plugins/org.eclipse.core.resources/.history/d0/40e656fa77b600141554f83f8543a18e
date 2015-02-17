@@ -1,0 +1,53 @@
+package org.elsys_bg.abonatnik.rest;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.elsys_bg.abonatnik.model.Student;
+
+@Path("abonatnik")
+public class StudentResource {
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Student> getAllStudents(){
+		List<Student> s = new ArrayList<Student>();
+		s.add(new Student("Georgi",12,'b', 9));
+//		s.add(new Student("Nedelko",11,'b', 22));
+		return s;
+	}
+	
+	
+//	@Path("{id}")
+//	@GET()
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Student getStudent(@PathParam(value = "id") String id){
+//		List<Student> s = new ArrayList<Student>();
+//		s.add(new Student("Georgi",12,'b', 9));
+//		return null;
+//	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+/*
+	I koi kaza bum ? pow ?
+	Watcha gonna do now ?
+	Celiq kvartal znai che sam managal!
+	- Kilata maika
+ */

@@ -1,2 +1,4 @@
 eclipse.preferences.version=1
+locationorg.eclipse.jst.server.tomcat.runtime.60=/home/student11b
 locationorg.eclipse.jst.server.tomcat.runtime.70=/home/student11b/eclipse
+locationorg.eclipse.jst.server.tomcat.runtime.80=/home/student11b/apache-tomcat-8.0.18
