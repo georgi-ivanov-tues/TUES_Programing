@@ -1,0 +1,19 @@
+http://downloads.mysql.com/archives/community/
+
+./scripts/mysql_install_db --basedir=/home/student11b/mysql-5.7.4-m14-linux-glibc2.5-x86_64 --datadir=/home/student11b/mysql-5.7.4-m14-linux-glibc2.5-x86_64/data
+
+/home/student11b/mysql-5.7.4-m14-linux-glibc2.5-x86_64/bin/mysqld_safe --defaults-file=/home/student11b/mysql-5.7.4-m14-linux-glibc2.5-x86_64/my.cnf
+	basedir = /home/student11b/mysql-5.7.4-m14-linux-glibc2.5-x86_64
+	datadir = /home/student11b/mysql-5.7.4-m14-linux-glibc2.5-x86_64/data
+	port = 3605
+	#server_id = .....
+	socket = /home/student11b/mysql-5.7.4-m14-linux-glibc2.5-x86_64/my_socket
+
+View password:
+	cat /home/student11b/.mysql_secret 
+
+Start client:
+	./bin/mysql --socket=/home/student11b/mysql-5.7.4-m14-linux-glibc2.5-x86_64/my_socket -uroot -p "password"
+	
+Set password:
+	SET PASSWORD = PASSWORD('123456');
