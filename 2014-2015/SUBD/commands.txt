@@ -1,0 +1,4 @@
+scp student@172.16.16.140:/home/student/Exam/B_1_Georgi.txt georgi.sql
+
+scp EXAM_FILE student@172.16.16.40:/home/student/finished_exam
+scp Georgi_Ivanov_B_09.zip student@172.16.16.140:/home/student/finished_exams
