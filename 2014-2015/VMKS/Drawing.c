@@ -131,6 +131,26 @@ void DrawWinningLine(short x1, short y1, short x2, short y2, Color_t lineColor) 
 	}					  
 }
 
+void DrawWinner(int winner) {
+ 	if(winner == 1) {
+	 	LCD_WriteString("Player 1 Wins!", &Fixedsys_descriptor, 10, 3, LCD_COLOR_BLACK, LCD_COLOR_WHITE);
+	} else if(winner == -1) {
+	 	LCD_WriteString("Player 2 Wins!", &Fixedsys_descriptor, 10, 3, LCD_COLOR_BLACK, LCD_COLOR_WHITE);
+	} else {
+	 	LCD_WriteString("It's a draw!", &Fixedsys_descriptor, 17, 3, LCD_COLOR_BLACK, LCD_COLOR_WHITE);
+	}
+}
+
+void DrawMenu() {
+	LCD_WriteString("TIC-TAC-TOE", &Fixedsys_descriptor, 20, 20, LCD_COLOR_BLACK, LCD_COLOR_WHITE);
+	LCD_WriteString("Host Game", &Fixedsys_descriptor, 20, 50, LCD_COLOR_BLACK, LCD_COLOR_WHITE);
+	LCD_WriteString("Join Game", &Fixedsys_descriptor, 20, 70, LCD_COLOR_BLACK, LCD_COLOR_WHITE);
+}
+
+void DrawMenuIndicator(int x) {
+
+}
+
 // 172.16.15.159:8080
 
 int main()
@@ -138,7 +158,8 @@ int main()
 	char		msg[100];
 	Color_t		bckgColor=LCD_COLOR_WHITE;
 	Color_t		lineColor=LCD_COLOR_BLACK;
-	int i = 10, current_x, current_y;
+	int i = 10, current_x, current_y, turn;
+	int field[3][3] = {{0,0,0}, {0,0,0}, {0,0,0}};
 	
 	AT91PS_PIO    p_pPioA  = AT91C_BASE_PIOA;
 	AT91PS_PIO    p_pPioB  = AT91C_BASE_PIOB;
@@ -213,36 +234,56 @@ int main()
 	InitLCD();
 	LCD_ClearScreen( bckgColor );
 
-	DrawGameField(lineColor);
+	DrawMenu();
+	//DrawGameField(lineColor);
 	//DrawIndicator(2, 2, lineColor);
-	DrawX(1, 1, lineColor);
+	/*DrawX(1, 1, lineColor);
 	DrawO(1, 2, lineColor);
 	DrawX(0, 0, lineColor);
 	DrawO(0, 2, lineColor);
-	DrawX(2, 2, lineColor);
-	DrawWinningLine(0, 0, 2, 2, LCD_COLOR_RED);
+	DrawX(2, 2, lineColor);*/
+	//DrawWinningLine(0, 0, 2, 2, LCD_COLOR_RED);
 	/* put other initializations here ... */
 	// ...
+	//DrawWinner(-1);
 
+	
 
 	current_x = 0;
 	current_y = 0;
+	turn = 1;
 	while ( true ) {	  
 	    // check button SW3
+
+		DrawIndicator(current_x, current_y, LCD_COLOR_WHITE);
 		
-		/*if((p_pPioA->PIO_PDSR) & BIT_JPUSH){
-			LCD_WriteString("No Push", &Fixedsys_descriptor, 2, 20, LCD_COLOR_WHITE, LCD_COLOR_BLUE);	
+		if((p_pPioA->PIO_PDSR) & BIT_JPUSH){
+			//LCD_WriteString("No Push", &Fixedsys_descriptor, 2, 20, LCD_COLOR_WHITE, LCD_COLOR_BLUE);	
 		}
 		else{
-			LCD_WriteString("PUSHEDDDDDD", &Fixedsys_descriptor, 2, 20, LCD_COLOR_WHITE, LCD_COLOR_BLUE);		
-		}*/
+			if(field[current_x][current_y] == 0) {
+			 	field[current_x][current_y] = turn;
+				if(turn == 1) {
+					DrawX(current_x, current_y, lineColor);
+					turn = -1;
+				} else {
+				 	DrawO(current_x, current_y, lineColor);
+					turn = 1;
+				}
+			}
+			//LCD_WriteString("PUSHEDDDDDD", &Fixedsys_descriptor, 2, 20, LCD_COLOR_WHITE, LCD_COLOR_BLUE);		
+		}
 
 		if(((p_pPioA->PIO_PDSR) & BIT_JUP)){
 			
 			//LCD_WriteString("No UP", &Fixedsys_descriptor, 2, 40, LCD_COLOR_WHITE, LCD_COLOR_BLUE);	
 		}
 		else{
-			current_y--;
+			if(current_y == 0) {
+			 	current_y = 2;
+			} else {
+				current_y--;
+			}
 			//LCD_WriteString("UPPPPPPPPPP", &Fixedsys_descriptor, 2, 40, LCD_COLOR_WHITE, LCD_COLOR_BLUE);		
 		} 
 
@@ -251,7 +292,11 @@ int main()
 			//LCD_WriteString("No LEFT", &Fixedsys_descriptor, 2, 60, LCD_COLOR_WHITE, LCD_COLOR_BLUE);	
 		}
 		else{
-			current_x--;
+			if(current_x == 0){
+				current_x = 2;
+			}else{
+				current_x--;
+			}
 			//LCD_WriteString("LEFTTTTTTTT", &Fixedsys_descriptor, 2, 60, LCD_COLOR_WHITE, LCD_COLOR_BLUE);		
 		} 
 
@@ -260,7 +305,11 @@ int main()
 			//LCD_WriteString("No RIGHT", &Fixedsys_descriptor, 2, 80, LCD_COLOR_WHITE, LCD_COLOR_BLUE);	
 		}
 		else{
-			current_x++;
+			if(current_x == 2){
+				current_x = 0;
+			}else{
+				current_x++;
+			}
 			//LCD_WriteString("RIGHTTTTTTT", &Fixedsys_descriptor, 2, 80, LCD_COLOR_WHITE, LCD_COLOR_BLUE);		
 		} 
 
@@ -269,7 +318,11 @@ int main()
 			//LCD_WriteString("No DOWN", &Fixedsys_descriptor, 2, 100, LCD_COLOR_WHITE, LCD_COLOR_BLUE);	
 		}
 		else{
-			current_y++;
+			if(current_y == 2){
+				current_y = 0;
+			}else{
+				current_y++;
+			}
 			//LCD_WriteString("DOWNNNNNNNN", &Fixedsys_descriptor, 2, 100, LCD_COLOR_WHITE, LCD_COLOR_BLUE);		
 		} 
 
