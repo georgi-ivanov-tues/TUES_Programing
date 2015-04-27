@@ -7,6 +7,8 @@
 
 //#include "bmp.h"
 
+int field[3][3] = {{0,0,0}, {0,0,0}, {0,0,0}};
+
 void Delay (unsigned long a) {while (--a!=0);}
 /*
 void DrawShit(int x1,int y1,int x2,int y2,int x3,int y3,int x4,int y4, Color_t border_color, Color_t fill_color) {
@@ -147,8 +149,112 @@ void DrawMenu() {
 	LCD_WriteString("Join Game", &Fixedsys_descriptor, 20, 70, LCD_COLOR_BLACK, LCD_COLOR_WHITE);
 }
 
-void DrawMenuIndicator(int x) {
+void DrawMenuIndicator(int x, Color_t lineColor) {
+	int y_offset = 50 + x * 20;
+	LCDSetLine(12, y_offset + 7, 15, y_offset + 4, lineColor);
+	LCDSetLine(12, y_offset + 7, 15, y_offset + 10, lineColor);
+	LCDSetLine(15, y_offset + 4, 18, y_offset + 7, lineColor);
+	LCDSetLine(15, y_offset + 10, 18, y_offset + 7, lineColor);
+}
 
+int determineWinner() {
+	int line = field[0][0] + field[1][0] + field[2][0]; 	
+
+	if(line == 3) {
+		DrawWinningLine(0, 0, 2, 0, LCD_COLOR_RED);
+		DrawWinner(1);
+		return 1;
+	} else if (line == -3) {
+	 	DrawWinningLine(0, 0, 2, 0, LCD_COLOR_RED);
+		DrawWinner(-1);
+		return 1;
+	}
+
+	line = field[0][1] + field[1][1] + field[2][1];
+
+	if(line == 3) {
+		DrawWinningLine(0, 1, 2, 1, LCD_COLOR_RED);
+		DrawWinner(1);
+		return 1;
+	} else if (line == -3) {
+	 	DrawWinningLine(0, 1, 2, 1, LCD_COLOR_RED);
+		DrawWinner(-1);
+		return 1;
+	}
+
+	line = field[0][2] + field[1][2] + field[2][2];
+
+	if(line == 3) {
+		DrawWinningLine(0, 2, 2, 2, LCD_COLOR_RED);
+		DrawWinner(1);
+		return 1;
+	} else if (line == -3) {
+	 	DrawWinningLine(0, 2, 2, 2, LCD_COLOR_RED);
+		DrawWinner(-1);
+		return 1;
+	}
+
+	line = field[0][0] + field[0][1] + field[0][2];
+
+	if(line == 3) {
+		DrawWinningLine(0, 0, 0, 2, LCD_COLOR_RED);
+		DrawWinner(1);
+		return 1;
+	} else if (line == -3) {
+	 	DrawWinningLine(0, 0, 0, 2, LCD_COLOR_RED);
+		DrawWinner(-1);
+		return 1;
+	}
+
+	line = field[1][0] + field[1][1] + field[1][2];
+
+	if(line == 3) {
+		DrawWinningLine(1, 0, 1, 2, LCD_COLOR_RED);
+		DrawWinner(1);
+		return 1;
+	} else if (line == -3) {
+	 	DrawWinningLine(1, 0, 1, 2, LCD_COLOR_RED);
+		DrawWinner(-1);
+		return 1;
+	}
+
+	line = field[2][0] + field[2][1] + field[2][2];
+
+	if(line == 3) {
+		DrawWinningLine(2, 0, 2, 2, LCD_COLOR_RED);
+		DrawWinner(1);
+		return 1;
+	} else if (line == -3) {
+	 	DrawWinningLine(2, 0, 2, 2, LCD_COLOR_RED);
+		DrawWinner(-1);
+		return 1;
+	}
+
+	line = field[0][0] + field[1][1] + field[2][2];
+
+	if(line == 3) {
+		DrawWinningLine(0, 0, 2, 2, LCD_COLOR_RED);
+		DrawWinner(1);
+		return 1;
+	} else if (line == -3) {
+	 	DrawWinningLine(0, 0, 2, 2, LCD_COLOR_RED);
+		DrawWinner(-1);
+		return 1;
+	}
+
+	line = field[0][2] + field[1][1] + field[2][0];
+
+	if(line == 3) {
+		DrawWinningLine(0, 2, 2, 0, LCD_COLOR_RED);
+		DrawWinner(1);
+		return 1;
+	} else if (line == -3) {
+	 	DrawWinningLine(0, 2, 2, 0, LCD_COLOR_RED);
+		DrawWinner(-1);
+		return 1;
+	}
+
+	return 0;
 }
 
 // 172.16.15.159:8080
@@ -158,8 +264,8 @@ int main()
 	char		msg[100];
 	Color_t		bckgColor=LCD_COLOR_WHITE;
 	Color_t		lineColor=LCD_COLOR_BLACK;
-	int i = 10, current_x, current_y, turn;
-	int field[3][3] = {{0,0,0}, {0,0,0}, {0,0,0}};
+	int i = 10, current_x, current_y, turn, menu_x, remaining;
+	
 	
 	AT91PS_PIO    p_pPioA  = AT91C_BASE_PIOA;
 	AT91PS_PIO    p_pPioB  = AT91C_BASE_PIOB;
@@ -234,8 +340,55 @@ int main()
 	InitLCD();
 	LCD_ClearScreen( bckgColor );
 
+	/*
 	DrawMenu();
-	//DrawGameField(lineColor);
+	DrawMenuIndicator(0, LCD_COLOR_BLACK);
+	menu_x = 0;
+	while ( true ) {	  
+	    // check button SW3
+
+		DrawMenuIndicator(menu_x, LCD_COLOR_WHITE);
+		
+		if((p_pPioA->PIO_PDSR) & BIT_JPUSH){
+			//LCD_WriteString("No Push", &Fixedsys_descriptor, 2, 20, LCD_COLOR_WHITE, LCD_COLOR_BLUE);	
+		}
+		else{
+
+			//LCD_WriteString("PUSHEDDDDDD", &Fixedsys_descriptor, 2, 20, LCD_COLOR_WHITE, LCD_COLOR_BLUE);		
+		}
+
+		if(((p_pPioA->PIO_PDSR) & BIT_JUP)){
+			
+			//LCD_WriteString("No UP", &Fixedsys_descriptor, 2, 40, LCD_COLOR_WHITE, LCD_COLOR_BLUE);	
+		}
+		else{
+			if(menu_x == 0) {
+			 	menu_x = 1;
+			} else {
+				menu_x--;
+			}
+			//LCD_WriteString("UPPPPPPPPPP", &Fixedsys_descriptor, 2, 40, LCD_COLOR_WHITE, LCD_COLOR_BLUE);		
+		} 
+
+		if((p_pPioA->PIO_PDSR) & BIT_JDOWN){
+			
+			//LCD_WriteString("No DOWN", &Fixedsys_descriptor, 2, 100, LCD_COLOR_WHITE, LCD_COLOR_BLUE);	
+		}
+		else{
+			if(menu_x == 1){
+				menu_x = 0;
+			}else{
+				menu_x++;
+			}
+			//LCD_WriteString("DOWNNNNNNNN", &Fixedsys_descriptor, 2, 100, LCD_COLOR_WHITE, LCD_COLOR_BLUE);		
+		} 
+
+		DrawMenuIndicator(menu_x, lineColor);
+		Delay(1000000);
+	}
+	*/
+
+	DrawGameField(lineColor);
 	//DrawIndicator(2, 2, lineColor);
 	/*DrawX(1, 1, lineColor);
 	DrawO(1, 2, lineColor);
@@ -251,6 +404,7 @@ int main()
 
 	current_x = 0;
 	current_y = 0;
+	remaining = 9;
 	turn = 1;
 	while ( true ) {	  
 	    // check button SW3
@@ -263,12 +417,19 @@ int main()
 		else{
 			if(field[current_x][current_y] == 0) {
 			 	field[current_x][current_y] = turn;
+				remaining--;		   
 				if(turn == 1) {
 					DrawX(current_x, current_y, lineColor);
 					turn = -1;
 				} else {
 				 	DrawO(current_x, current_y, lineColor);
 					turn = 1;
+				}
+				if(determineWinner() == 1) {
+				 	break;
+				} else if(remaining == 0) {
+					DrawWinner(0);
+					break;
 				}
 			}
 			//LCD_WriteString("PUSHEDDDDDD", &Fixedsys_descriptor, 2, 20, LCD_COLOR_WHITE, LCD_COLOR_BLUE);		
