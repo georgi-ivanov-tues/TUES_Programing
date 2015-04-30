@@ -5,13 +5,50 @@
 #include <fixedsys.h>
 #include <lcd_GE8.h>
 
+#include <lib_at91sam7_pio.h>
+#include <lib_at91sam7_pmc.h>
+#include <lib_at91sam7_usart.h>
+
 //#include "bmp.h"
+
+#define	BIT_JUP 0x0000200
+#define	BIT_JDOWN 0x0000100
+#define	BIT_JLEFT 0x000080
+
+#define	BIT_JRIGHT 0x0004000
+#define	BIT_JPUSH 0x00008000
+
+#define   cu32BitN(N)        ( (U32) ( 1 << (N) ) )
+
+/*! RXD0 value */
+#define   RXD0		(cu32BitN(0))
+/*! TXD0 value */
+#define   TXD0		(cu32BitN(1))
+/*! RTS0 value */
+#define   RTS0		(cu32BitN(3))
+/*! CTS0 value */
+#define   CTS0		(cu32BitN(4))
 
 int field[3][3] = {{0,0,0}, {0,0,0}, {0,0,0}};
 Color_t		bckgColor=LCD_COLOR_WHITE;
 Color_t		lineColor=LCD_COLOR_BLACK;
 
+AT91PS_PIO    p_pPioA  = AT91C_BASE_PIOA;
+AT91PS_PIO    p_pPioB  = AT91C_BASE_PIOB;
+AT91PS_PMC    p_pPMC   = AT91C_BASE_PMC;
+AT91PS_SYS    p_pSys   = AT91C_BASE_SYS;
+AT91PS_USART 	p_pUART0 	= AT91C_BASE_US0;
+
+
 void Delay (unsigned long a) {while (--a!=0);}
+
+int toInt(char c) {
+ 	return c - '0';
+}
+
+char toChar(int i) {
+ 	return i + '0';
+}
 
 void DrawGameField(Color_t lineColor){
 	LCDSetLine(20, 20, 110, 20, lineColor);
@@ -224,11 +261,24 @@ int determineWinner() {
 }
 
 void PlaySinglePlayer() {
+	int i, j;
+	for(i = 0; i <= 2; i++) {
+	 	for(j = 0; j <= 2; j++) {
+		 	field[i][j] = 0;
+		}
+	}
+
 	return;
 }
 
 void PlayLocal() {
 	int current_x, current_y, turn, remaining;
+	int i, j;
+	for(i = 0; i <= 2; i++) {
+	 	for(j = 0; j <= 2; j++) {
+		 	field[i][j] = 0;
+		}
+	}
 
 	LCD_ClearScreen( bckgColor );
 	DrawGameField(lineColor);
@@ -316,13 +366,25 @@ void PlayLocal() {
 
 void HostGame() {
 	int current_x, current_y, remaining;
+	int i, j;
+	for(i = 0; i <= 2; i++) {
+	 	for(j = 0; j <= 2; j++) {
+		 	field[i][j] = 0;
+		}
+	}
 
 	LCD_ClearScreen( bckgColor );
-	LCD_WriteString("Looking for an opponent...", &Fixedsys_descriptor, 3, 20, LCD_COLOR_BLACK, LCD_COLOR_WHITE);
+	LCD_WriteString("Looking for an", &Fixedsys_descriptor, 3, 20, LCD_COLOR_BLACK, LCD_COLOR_WHITE);
+	LCD_WriteString("opponent...", &Fixedsys_descriptor, 3, 40, LCD_COLOR_BLACK, LCD_COLOR_WHITE);
 
-	//Send message...
+	AT91F_US_PutChar(p_pUART0, 'X');
 
-	//Wait to receive message
+	while(true) {
+		while(!AT91F_US_RxReady(p_pUART0)) {}
+		if(AT91F_US_GetChar(p_pUART0) == 'O') {
+		 	break;
+		}
+	}
 
 	LCD_ClearScreen( bckgColor );
 	DrawGameField(lineColor);
@@ -339,6 +401,9 @@ void HostGame() {
 			 	field[current_x][current_y] = 1;
 				remaining--;		   
 				DrawX(current_x, current_y, lineColor);
+				AT91F_US_PutChar(p_pUART0, toChar(current_x));
+				Delay(100000);
+				AT91F_US_PutChar(p_pUART0, toChar(current_y));
 				if(determineWinner() == 1) {
 				 	Delay(1000000);
 					while(true) {
@@ -357,8 +422,10 @@ void HostGame() {
 						}
 					}
 				} else {
-					//current_x = wait to receive x
-					//current_y = wait to receive y
+					while(!AT91F_US_RxReady(p_pUART0)) {}
+					current_x = toInt(AT91F_US_GetChar(p_pUART0));
+					while(!AT91F_US_RxReady(p_pUART0)) {}
+					current_y = toInt(AT91F_US_GetChar(p_pUART0));
 					field[current_x][current_y] = -1;
 					remaining--;
 					DrawO(current_x, current_y, lineColor);
@@ -418,13 +485,21 @@ void HostGame() {
 
 void JoinGame() {
 	int current_x, current_y, remaining;
+	int i, j;
+	for(i = 0; i <= 2; i++) {
+	 	for(j = 0; j <= 2; j++) {
+		 	field[i][j] = 0;
+		}
+	}
 
 	LCD_ClearScreen( bckgColor );
-	LCD_WriteString("Looking for an opponent...", &Fixedsys_descriptor, 3, 20, LCD_COLOR_BLACK, LCD_COLOR_WHITE);
+	LCD_WriteString("Looking for an", &Fixedsys_descriptor, 3, 20, LCD_COLOR_BLACK, LCD_COLOR_WHITE);
+	LCD_WriteString("opponent...", &Fixedsys_descriptor, 3, 40, LCD_COLOR_BLACK, LCD_COLOR_WHITE);
 
-	//Wait to receive message
+	while(!AT91F_US_RxReady(p_pUART0)) {}
+	AT91F_US_GetChar(p_pUART0);
 
-	//Send message
+	AT91F_US_PutChar(p_pUART0, 'O');
 
 	LCD_ClearScreen( bckgColor );
 	DrawGameField(lineColor);
@@ -433,8 +508,10 @@ void JoinGame() {
 	current_y = 0;
 	remaining = 9;
 
-	//current_x = wait to receive x;
-	//current_y = wait to receive y;
+	while(!AT91F_US_RxReady(p_pUART0)) {}
+	current_x = toInt(AT91F_US_GetChar(p_pUART0));
+	while(!AT91F_US_RxReady(p_pUART0)) {}
+	current_y = toInt(AT91F_US_GetChar(p_pUART0));
 	field[current_x][current_y] = 1;
 	remaining--;
 	DrawX(current_x, current_y, lineColor);
@@ -447,6 +524,9 @@ void JoinGame() {
 			 	field[current_x][current_y] = -1;
 				remaining--;		   
 				DrawO(current_x, current_y, lineColor);
+				AT91F_US_PutChar(p_pUART0, toChar(current_x));
+				Delay(100000);
+				AT91F_US_PutChar(p_pUART0, toChar(current_y));
 				if(determineWinner() == 1) {
 				 	Delay(1000000);
 					while(true) {
@@ -465,8 +545,10 @@ void JoinGame() {
 						}
 					}
 				} else {
-					//current_x = wait to receive x
-					//current_y = wait to receive y
+					while(!AT91F_US_RxReady(p_pUART0)) {}
+					current_x = toInt(AT91F_US_GetChar(p_pUART0));
+					while(!AT91F_US_RxReady(p_pUART0)) {}
+					current_y = toInt(AT91F_US_GetChar(p_pUART0));
 					field[current_x][current_y] = 1;
 					remaining--;
 					DrawX(current_x, current_y, lineColor);
@@ -533,15 +615,14 @@ void JoinGame() {
 	}
 }
 
+
+
 int main()
 {
 	int menu_x;
 	
 	
-	AT91PS_PIO    p_pPioA  = AT91C_BASE_PIOA;
-	AT91PS_PIO    p_pPioB  = AT91C_BASE_PIOB;
-	AT91PS_PMC    p_pPMC   = AT91C_BASE_PMC;
-	AT91PS_SYS    p_pSys   = AT91C_BASE_SYS;
+	
 
 	AT91F_LowLevel_Init();
 
@@ -560,12 +641,7 @@ int main()
 #define	BIT_SW2 0x02000000
 #define	BIT_SW3 0x03000000
 
-#define	BIT_JUP 0x0000200
-#define	BIT_JDOWN 0x0000100
-#define	BIT_JLEFT 0x000080
 
-#define	BIT_JRIGHT 0x0004000
-#define	BIT_JPUSH 0x00008000
 
 
 	// BUTTON SW1
@@ -600,6 +676,13 @@ int main()
 	// JOYSTICK DWON 
 	p_pPioA->PIO_ODR |= BIT_JDOWN; //Configure in Input
 	p_pPioA->PIO_PER |= BIT_JDOWN; //Enable PA8	
+
+	AT91F_US_Configure(p_pUART0, MCK, AT91C_US_ASYNC_MODE, 9600L, 0 );
+	AT91F_PMC_EnablePeripheralClock(p_pPMC, 1 << AT91C_ID_US0 );
+    AT91F_US_EnableRx(p_pUART0);
+    AT91F_US_EnableTx(p_pUART0);
+	AT91F_PIO_Disable( p_pPioA, RXD0 | TXD0 | RTS0 | CTS0  );
+	AT91F_PIO_A_RegisterSelection( p_pPioA, RXD0 | TXD0 | RTS0 | CTS0  );
 
 	/* Initialize the Atmel AT91SAM7X256 (watchdog, PLL clock, default interrupts, etc.) */
 
